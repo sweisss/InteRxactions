@@ -241,7 +241,7 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
             }
         }
 
-        //Set up observer for loading status of API query
+        // Set up observer for loading status of API query
         viewModel.loading.observe(viewLifecycleOwner) { loading ->
             if (loading) {
                 drugsInfoView.visibility = View.INVISIBLE
@@ -252,7 +252,7 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
             }
         }
 
-        //Set up observer for error status of API query
+        // Set up observer for error status of API query
         viewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
                 drugsInfoView.visibility = View.INVISIBLE
