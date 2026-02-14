@@ -29,25 +29,25 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
  * displays it in a pie chart.
  */
 class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
-    //View model for the adverse events fragment
+    // View model for the adverse events fragment
     private val viewModel: AdverseEventsViewModel by viewModels()
 
-    //View model for the searched drug. Used to get the most recent searched drug to use in the API call
+    // View model for the searched drug. Used to get the most recent searched drug to use in the API call
     private val searchedDrugsViewModel: SearchedDrugViewModel by viewModels()
 
-    //Total number of outcomes for the drug
+    // Total number of outcomes for the drug
     private var totalOutcomes: Float = 0f
     private var outcomeCount = mutableMapOf<String, Int>()
 
-    //Pie chart for displaying the data
+    // Pie chart for displaying the data
     private lateinit var pieChart: PieChart
     private lateinit var adverseHeadline: TextView
 
-    //Loading indicator for when the API call is being made
+    // Loading indicator for when the API call is being made
     private lateinit var loadingIndicator: CircularProgressIndicator
     private lateinit var adverseEventsView: View
 
-    //Cached drug name for the most recent searched drug
+    // Cached drug name for the most recent searched drug
     private lateinit var cachedDrugName: String
 
     @SuppressLint("ResourceType")
@@ -64,7 +64,7 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
          * and sets it up with the values we have stored.
          */
         viewModel.outcomeCounts.observe(viewLifecycleOwner) { outcomes ->
-            //If we have data then we can display it
+            // If we have data then we can display it
             if (outcomes != null) {
                 Log.d("AdverseEventsFragment", outcomes.toString())
 
@@ -72,11 +72,11 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
 
                 pieChart = view.findViewById(R.id.pieChart_view)
 
-                //Set up the headline for the adverse events
+                // Set up the headline for the adverse events
                 adverseHeadline = view.findViewById(R.id.adverse_headline)
                 adverseHeadline.text = getString(R.string.adverse_headline, cachedDrugName)
 
-                //Set up the pie chart
+                // Set up the pie chart
                 val pieDataset: PieDataSet
                 val pieEntries = mutableListOf<PieEntry>()
                 val pieColors = mutableListOf<Int>()
@@ -84,18 +84,18 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
                 totalOutcomes = 0f
 
                 val reorderedResults = outcomes.results.sortedByDescending { it.term }
-                //Iterate through the data and store it in a map
+                // Iterate through the data and store it in a map
                 reorderedResults.forEach { count ->
                     totalOutcomes += count.count
 
-                    //Map the 6 values into the only 4 that we want using enum
+                    // Map the 6 values into the only 4 that we want using enum
                     when(count.term) {
-                        //If the outcome is not recovered or resolved, recovering or resolving, or recovered or resolved
+                        // If the outcome is not recovered or resolved, recovering or resolving, or recovered or resolved
                         OutcomesEnum.RECOVERED_WITH_LONG_TERM_ISSUES.value,
                         OutcomesEnum.NOT_RECOVERED_OR_RESOLVED.value,
                         OutcomesEnum.RECOVERING_RESOLVING.value,
                         OutcomesEnum.RECOVERED_RESOLVED.value -> {
-                            //If the outcome is death, hospitalization, or long lasting effects
+                            // If the outcome is death, hospitalization, or long-lasting effects
                             if (outcomeCount.containsKey("Hospitalization")) {
                                 outcomeCount["Hospitalization"] =
                                     outcomeCount["Hospitalization"]!! + count.count
@@ -104,42 +104,40 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
                             }
                         }
 
-                        //If the outcome is death
+                        // If the outcome is death
                         OutcomesEnum.FATAL.value -> {
                             outcomeCount["Death"] = count.count
                         }
 
-                        //If the outcome is unknown
+                        // If the outcome is unknown
                         OutcomesEnum.UNKNOWN.value -> {
                             outcomeCount["Other"] = count.count
                         }
                     }
                 }
 
-                //add colors for pie chart
+                // Add colors for pie chart
                 pieColors.add(Color.parseColor(getString(R.color.chart_hospitalization)))
                 pieColors.add(Color.parseColor(getString(R.color.chart_death)))
                 pieColors.add(Color.parseColor(getString(R.color.chart_other)))
 
-                //populating pie chart with data with data we just stored in the
-                // outcomeCount map
+                // Populate pie chart with data the outcomeCount map
                 outcomeCount.forEach { (key, value) ->
                     val percent: Float = (value / totalOutcomes) * 100
 
                     pieEntries.add(0, PieEntry(percent, key))
                 }
 
-                //set data and colors
+                // Set data and colors
                 pieDataset = PieDataSet(pieEntries, "")
                 pieDataset.colors = pieColors
 
-                //create pie data with our data set and set
-                //other values
+                // Create pie data with data set
                 val pieData = PieData(pieDataset)
                 pieData.setValueTextSize(18f)
                 pieData.setValueFormatter(PercentFormatter(pieChart))
 
-                //initialization and customization for pie chart
+                // Initialization and customization for pie chart
                 pieChart.data = pieData
                 pieChart.dragDecelerationFrictionCoef = 0.9f
                 pieChart.rotationAngle = 90f
@@ -164,7 +162,7 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
             }
         }
 
-        //Set up an observer for the error status of the API query
+        // Set up an observer for the error status of the API query
         viewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
                 Log.e("AdverseEventsFragment", "Error fetching data: ${error.message}")
@@ -172,7 +170,7 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
             }
         }
 
-        //Set up an observer for the loading status of the API query
+        // Set up an observer for the loading status of the API query
         viewModel.loading.observe(viewLifecycleOwner) { loading ->
             if (loading) {
                 adverseEventsView.visibility = View.INVISIBLE
@@ -188,13 +186,13 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
     override fun onResume() {
         super.onResume()
 
-        //Set up an observer for the most recent searched drug
+        // Set up an observer for the most recent searched drug
         searchedDrugsViewModel.mostRecentSearchedDrug.observe(viewLifecycleOwner) { drug ->
-            //If we have a drug then we can make the API call
+            // If we have a drug then we can make the API call
             if (drug != null) {
-                //Cache the most recent searched drug
+                // Cache the most recent searched drug
                 cachedDrugName = drug[0].drugName
-                //Make the API call using the most recent searched drug
+                // Make the API call using the most recent searched drug
                 val query = "patient.drug.openfda.generic_name:${drug[0].drugName}"
                 viewModel.loadReactionOutcomeCount(query)
             }
