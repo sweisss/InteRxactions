@@ -152,31 +152,22 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
             searchResultsListRV.adapter = adapter
 
             /**
-             * The function to handle when a drug is clicked
+             * The function to build a string from the list of drugs that interact with the searched drug
+             * that can be shared
              *
-             * This function will handle when a drug is clicked.
-             * It will navigate to the ManufacturersListFragment with the drug that was clicked.
+             * This function will take a list of DrugInfo objects from the API results and build a string from them
+             * that can be incorporated in a ShareSheet.
              *
-             * @param drugInfo DrugInteractionsDisplay
-             * The drug that was clicked
+             * @param searchedDrug String
+             * The name of the drug that was searched
+             *
+             * @param drugList List<DrugInteractionsDisplay>
+             * The list of drugs that interact with the searched drug
+             *
+             * @return String
+             * The string from the list of drugs that interact with the searched drug that can be shared
              */
             viewModel.searchResults.observe(viewLifecycleOwner) { drugInformationResults ->
-                /**
-                 * The function to build a string from the list of drugs that interact with the searched drug
-                 * that can be shared
-                 *
-                 * This function will take a list of DrugInfo objects from the API results and build a string from them
-                 * that can be incorporated in a ShareSheet.
-                 *
-                 * @param searchedDrug String
-                 * The name of the drug that was searched
-                 *
-                 * @param drugList List<DrugInteractionsDisplay>
-                 * The list of drugs that interact with the searched drug
-                 *
-                 * @return String
-                 * The string from the list of drugs that interact with the searched drug that can be shared
-                 */
                 if (drugInformationResults != null) {
 
                     drugsInfoView.visibility = View.VISIBLE
