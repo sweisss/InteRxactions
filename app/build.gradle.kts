@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cs492_finalproject_rxwatch"
+    namespace = "com.example.interxactions"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.cs492_finalproject_rxwatch"
+        applicationId = "com.example.interxactions"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

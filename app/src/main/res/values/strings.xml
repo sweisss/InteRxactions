@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RxWatch</string>
+    <string name="app_name">InteRxactions</string>
 
     <string name="search_hint">Enter a drug name…</string>
     <string name="search_button">Find Interacting Drugs</string>
@@ -17,10 +17,10 @@
     <string name="action_share">Share</string>
     <string name="share_text">DRUG: %1$s\n\nPOSSIBLE INTERACTIONS: %2$s</string>
 
-    <string name="label_rx_search">RxWatch - Search</string>
-    <string name="label_drug_report">RxWatch - Interacting Drugs</string>
-    <string name="label_adverse_events">RxWatch - Adverse Events</string>
-    <string name="label_manufacturers_list">RxWatch - Manufacturers</string>
+    <string name="label_rx_search">InteRxactions - Search</string>
+    <string name="label_drug_report">InteRxactions - Interacting Drugs</string>
+    <string name="label_adverse_events">InteRxactions - Adverse Events</string>
+    <string name="label_manufacturers_list">InteRxactions - Manufacturers</string>
     <string name="error_message">"ERROR: %1$s"</string>
 
     <string name="chart_total_events">Total Events Reported:\n%1$s</string>
