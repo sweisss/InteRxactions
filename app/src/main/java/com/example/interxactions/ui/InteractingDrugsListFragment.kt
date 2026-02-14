@@ -21,7 +21,9 @@ import com.example.interxactions.R
 import com.example.interxactions.data.DrugInteractionsDisplay
 import com.example.interxactions.data.Manufacturer
 import com.example.interxactions.data.database.SearchedDrugViewModel
+import com.example.interxactions.utils.titleCaseWithExceptions
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import java.util.Locale
 
 /**
  * A fragment to display the list of drugs that interact with the searched drug.
@@ -184,7 +186,9 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
                     // Iterate through the list of drugs that interact with the searched drug
                     drugInfoList.forEach { drugInfo ->
                         drugInfo.openFDA?.genericName?.forEach { genericName ->
-                            val mfrToInteractionsMap = drugInteractionsMap.getOrPut(genericName) {
+                            val mfrToInteractionsMap = drugInteractionsMap.getOrPut(
+                                titleCaseWithExceptions(genericName)
+                            ) {
                                 mutableMapOf()
                             }
                             drugInfo.openFDA.manufacturerName?.forEach { mfrName ->
