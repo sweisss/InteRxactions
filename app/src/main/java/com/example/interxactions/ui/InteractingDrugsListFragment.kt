@@ -257,7 +257,7 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
             if (error != null) {
                 drugsInfoView.visibility = View.INVISIBLE
                 errorMessages.visibility = View.VISIBLE
-                errorMessages.text = getString(R.string.error_message, searchedDrugName)
+                errorMessages.text = getString(R.string.error_message, searchedDrugName, "Online Label Repository")
             }
         }
 

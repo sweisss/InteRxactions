@@ -21,7 +21,7 @@
     <string name="label_drug_report">InteRxactions - Interacting Drugs</string>
     <string name="label_adverse_events">InteRxactions - Adverse Events</string>
     <string name="label_manufacturers_list">InteRxactions - Manufacturers</string>
-    <string name="error_message">"Could not find '%1$s' in the FDA Online Label Repository."</string>
+    <string name="error_message">"Could not find '%1$s' in the FDA %2$s."</string>
 
     <string name="chart_total_events">Total Events Reported:\n%1$s</string>
     <string name="other_legend_label">Other - Other Adverse Outcomes Not Hospitalised or Fatal</string>

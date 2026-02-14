@@ -47,6 +47,9 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
     private lateinit var loadingIndicator: CircularProgressIndicator
     private lateinit var adverseEventsView: View
 
+    // The text view to display error messages
+    private lateinit var errorMessage: TextView
+
     // Cached drug name for the most recent searched drug
     private lateinit var cachedDrugName: String
 
@@ -56,9 +59,10 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
 
         adverseEventsView = view.findViewById(R.id.constraint_layout_adverse)
         loadingIndicator = view.findViewById(R.id.loading_indicator)
+        errorMessage = view.findViewById(R.id.tv_error_message)
 
         /*
-         * Whenever a API call is made through the view model that doesn't
+         * Whenever an API call is made through the view model that doesn't
          * used cache data the outcomeCounts will be changed calling this
          * listener. This function maintains the data set for our pie chart
          * and sets it up with the values we have stored.
@@ -162,14 +166,6 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
             }
         }
 
-        // Set up an observer for the error status of the API query
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            if (error != null) {
-                Log.e("AdverseEventsFragment", "Error fetching data: ${error.message}")
-                error.printStackTrace()
-            }
-        }
-
         // Set up an observer for the loading status of the API query
         viewModel.loading.observe(viewLifecycleOwner) { loading ->
             if (loading) {
@@ -181,6 +177,15 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
             }
         }
 
+        // Set up an observer for the error status of the API query
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                Log.e("AdverseEventsFragment", "Error fetching data: $error")
+                adverseEventsView.visibility = View.INVISIBLE
+                errorMessage.visibility = View.VISIBLE
+                errorMessage.text = getString(R.string.error_message, cachedDrugName, "Adverse Event Reporting System (FAERS)")
+            }
+        }
     }
 
     override fun onResume() {
