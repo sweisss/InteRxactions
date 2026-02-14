@@ -21,7 +21,9 @@ import com.example.interxactions.R
 import com.example.interxactions.data.DrugInteractionsDisplay
 import com.example.interxactions.data.Manufacturer
 import com.example.interxactions.data.database.SearchedDrugViewModel
+import com.example.interxactions.utils.titleCaseWithExceptions
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import java.util.Locale
 
 /**
  * A fragment to display the list of drugs that interact with the searched drug.
@@ -152,31 +154,22 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
             searchResultsListRV.adapter = adapter
 
             /**
-             * The function to handle when a drug is clicked
+             * The function to build a string from the list of drugs that interact with the searched drug
+             * that can be shared
              *
-             * This function will handle when a drug is clicked.
-             * It will navigate to the ManufacturersListFragment with the drug that was clicked.
+             * This function will take a list of DrugInfo objects from the API results and build a string from them
+             * that can be incorporated in a ShareSheet.
              *
-             * @param drugInfo DrugInteractionsDisplay
-             * The drug that was clicked
+             * @param searchedDrug String
+             * The name of the drug that was searched
+             *
+             * @param drugList List<DrugInteractionsDisplay>
+             * The list of drugs that interact with the searched drug
+             *
+             * @return String
+             * The string from the list of drugs that interact with the searched drug that can be shared
              */
             viewModel.searchResults.observe(viewLifecycleOwner) { drugInformationResults ->
-                /**
-                 * The function to build a string from the list of drugs that interact with the searched drug
-                 * that can be shared
-                 *
-                 * This function will take a list of DrugInfo objects from the API results and build a string from them
-                 * that can be incorporated in a ShareSheet.
-                 *
-                 * @param searchedDrug String
-                 * The name of the drug that was searched
-                 *
-                 * @param drugList List<DrugInteractionsDisplay>
-                 * The list of drugs that interact with the searched drug
-                 *
-                 * @return String
-                 * The string from the list of drugs that interact with the searched drug that can be shared
-                 */
                 if (drugInformationResults != null) {
 
                     drugsInfoView.visibility = View.VISIBLE
@@ -193,7 +186,9 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
                     // Iterate through the list of drugs that interact with the searched drug
                     drugInfoList.forEach { drugInfo ->
                         drugInfo.openFDA?.genericName?.forEach { genericName ->
-                            val mfrToInteractionsMap = drugInteractionsMap.getOrPut(genericName) {
+                            val mfrToInteractionsMap = drugInteractionsMap.getOrPut(
+                                titleCaseWithExceptions(genericName)
+                            ) {
                                 mutableMapOf()
                             }
                             drugInfo.openFDA.manufacturerName?.forEach { mfrName ->
@@ -246,7 +241,7 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
             }
         }
 
-        //Set up observer for loading status of API query
+        // Set up observer for loading status of API query
         viewModel.loading.observe(viewLifecycleOwner) { loading ->
             if (loading) {
                 drugsInfoView.visibility = View.INVISIBLE
@@ -257,12 +252,12 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
             }
         }
 
-        //Set up observer for error status of API query
+        // Set up observer for error status of API query
         viewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
                 drugsInfoView.visibility = View.INVISIBLE
                 errorMessages.visibility = View.VISIBLE
-                errorMessages.text = getString(R.string.error_message, error)
+                errorMessages.text = getString(R.string.error_message, searchedDrugName, "Online Label Repository")
             }
         }
 

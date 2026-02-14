@@ -18,16 +18,17 @@ class AdverseEventsViewModel: ViewModel() {
     private val _loading = MutableLiveData<Boolean>(false)
     val loading: LiveData<Boolean> = _loading
 
-    private val _error = MutableLiveData<Throwable?>(null)
-    val error: LiveData<Throwable?> = _error
+    // Create LiveData objects for the error
+    private val _error = MutableLiveData<String?>(null)
+    val error: LiveData<String?> = _error
 
     fun loadReactionOutcomeCount(search: String) {
         viewModelScope.launch {
             _loading.value = true
             val result = repository.getReactionOutcomeCount(search)
             _loading.value = false
-            _error.value = result.exceptionOrNull()
             _outcomeCounts.value = result.getOrNull()
+            _error.value = result.exceptionOrNull()?.message // Get the error message
         }
     }
 }
