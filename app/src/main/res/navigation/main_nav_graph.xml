@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/rx_search"
-        android:name="com.example.cs492_finalproject_rxwatch.ui.RxSearchFragment"
+        android:name="com.example.interxactions.ui.RxSearchFragment"
         android:label="@string/label_rx_search" >
         <action
             android:id="@+id/navigate_to_drug_report"
@@ -16,13 +16,13 @@
 
     <fragment
         android:id="@+id/adverse_events"
-        android:name="com.example.cs492_finalproject_rxwatch.ui.AdverseEventsFragment"
+        android:name="com.example.interxactions.ui.AdverseEventsFragment"
         android:label="@string/label_adverse_events" >
     </fragment>
 
     <fragment
         android:id="@+id/drug_report"
-        android:name="com.example.cs492_finalproject_rxwatch.ui.InteractingDrugsListFragment"
+        android:name="com.example.interxactions.ui.InteractingDrugsListFragment"
         android:label="@string/label_drug_report" >
         <action
             android:id="@+id/navigate_to_rx_search"
@@ -39,11 +39,11 @@
 
     <fragment
         android:id="@+id/manufacturers_list"
-        android:name="com.example.cs492_finalproject_rxwatch.ui.ManufacturersListFragment"
+        android:name="com.example.interxactions.ui.ManufacturersListFragment"
         android:label="@string/label_manufacturers_list">
         <argument
             android:name="druginfo"
-            app:argType="com.example.cs492_finalproject_rxwatch.data.DrugInteractionsDisplay" />
+            app:argType="com.example.interxactions.data.DrugInteractionsDisplay" />
         <argument
             android:name="searched_drug_name"
             app:argType="string" />
