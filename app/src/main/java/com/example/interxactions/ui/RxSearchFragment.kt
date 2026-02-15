@@ -3,7 +3,9 @@ package com.example.interxactions.ui
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
@@ -33,6 +35,32 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
         searchBox = view.findViewById(R.id.et_search_box)
         searchButton = view.findViewById(R.id.btn_navigate)
 
+        // Change "Enter" on the keyboard to "Search"
+        searchBox.setOnEditorActionListener { _, actionId, event ->
+            val directions = RxSearchFragmentDirections.navigateToDrugReport()
+            val query = titleCaseWithExceptions(searchBox.text.toString().trim())
+            Log.d("RxSearchFragment", "Query from text entry: $query")
+
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                Log.d("RxSearchFragment", "Search query: $query")
+                searchedDrugsViewModel.addSearchedDrug(SearchedDrug(
+                    query,
+                    System.currentTimeMillis()
+                ))
+                findNavController().navigate(directions)
+                true // Consume the event
+            } else {
+                Snackbar.make(
+                    view,
+                    "Please enter or select a drug to search.",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                false
+            }
+        }
+
+        // Set the OnClickListener for the search button
         searchButton.setOnClickListener {
             val directions = RxSearchFragmentDirections.navigateToDrugReport()
             val query = titleCaseWithExceptions(searchBox.text.toString().trim())
