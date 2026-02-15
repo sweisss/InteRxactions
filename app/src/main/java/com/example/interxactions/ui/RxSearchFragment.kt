@@ -1,7 +1,6 @@
 package com.example.interxactions.ui
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -19,7 +18,6 @@ import com.example.interxactions.data.database.SearchedDrug
 import com.example.interxactions.data.database.SearchedDrugViewModel
 import com.example.interxactions.utils.titleCaseWithExceptions
 import com.google.android.material.snackbar.Snackbar
-import java.util.Locale
 
 class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
     private lateinit var searchButton: ImageButton
