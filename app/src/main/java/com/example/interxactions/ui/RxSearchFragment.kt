@@ -35,52 +35,8 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
         searchBox = view.findViewById(R.id.et_search_box)
         searchButton = view.findViewById(R.id.btn_navigate)
 
-        // Change "Enter" on the keyboard to "Search"
-        searchBox.setOnEditorActionListener { _, actionId, event ->
-            val directions = RxSearchFragmentDirections.navigateToDrugReport()
-            val query = titleCaseWithExceptions(searchBox.text.toString().trim())
-            Log.d("RxSearchFragment", "Query from text entry: $query")
-
-            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
-                Log.d("RxSearchFragment", "Search query: $query")
-                searchedDrugsViewModel.addSearchedDrug(SearchedDrug(
-                    query,
-                    System.currentTimeMillis()
-                ))
-                findNavController().navigate(directions)
-                true // Consume the event
-            } else {
-                Snackbar.make(
-                    view,
-                    "Please enter or select a drug to search.",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                false
-            }
-        }
-
-        // Set the OnClickListener for the search button
-        searchButton.setOnClickListener {
-            val directions = RxSearchFragmentDirections.navigateToDrugReport()
-            val query = titleCaseWithExceptions(searchBox.text.toString().trim())
-            Log.d("RxSearchFragment", "Query from text entry: $query")
-
-            if (!TextUtils.isEmpty(query)) {
-                Log.d("RxSearchFragment", "Search query: $query")
-                searchedDrugsViewModel.addSearchedDrug(SearchedDrug(
-                    query,
-                    System.currentTimeMillis()
-                ))
-                findNavController().navigate(directions)
-            } else {
-                Snackbar.make(
-                    view,
-                    "Please enter or select a drug to search.",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-        }
+        setupSearchListener()
+        setupSearchButton()
 
         searchedDrugList.layoutManager = LinearLayoutManager(requireContext())
         searchedDrugList.setHasFixedSize(true)
@@ -114,6 +70,50 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
             }
 
         ItemTouchHelper(itemTouchCallBack).attachToRecyclerView(searchedDrugList)
+    }
+
+    private fun setupSearchListener() {
+        searchBox.setOnEditorActionListener { _, actionId, event ->
+            val isSearchAction = actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+
+            if (isSearchAction) {
+                if (getQuery().isNotEmpty()) {
+                    performSearch()
+                } else {
+                    showEmptyQueryError()
+                }
+            }
+            isSearchAction
+        }
+    }
+
+    private fun setupSearchButton() {
+        searchButton.setOnClickListener {
+            if (getQuery().isNotEmpty()) {
+                performSearch()
+            } else {
+                showEmptyQueryError()
+            }
+        }
+    }
+
+    private fun performSearch() {
+        val query = getQuery()
+        Log.d("RxSearchFragment", "Search query: $query")
+
+        searchedDrugsViewModel.addSearchedDrug(SearchedDrug(query, System.currentTimeMillis()))
+        findNavController().navigate(RxSearchFragmentDirections.navigateToDrugReport())
+    }
+
+    private fun getQuery(): String = titleCaseWithExceptions(searchBox.text.toString().trim())
+
+    private fun showEmptyQueryError() {
+        Snackbar.make(
+            searchBox,
+            "Please enter or select a drug to search.",
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun onRecentlySearchedDrugClicked(drug: SearchedDrug) {
