@@ -17,7 +17,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_search_box"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
