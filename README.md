@@ -18,4 +18,6 @@ The OpenFDA API does not require a registered account or key.
 
 ## Third-party API calls
 - Drug Labeling endpoint: https://open.fda.gov/apis/drug/label/ 
-- Adverse Effects endpoint: https://open.fda.gov/apis/drug/event/ 
+- Adverse Effects endpoint: https://open.fda.gov/apis/drug/event/
+
+A Jupyter notebook to help parse the API data can be found [here](https://colab.research.google.com/drive/11AEnCVZ9o3MY4wFWgxx-WFIOsewW73_-?usp=sharing). 
