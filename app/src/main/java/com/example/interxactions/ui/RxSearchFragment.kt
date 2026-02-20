@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -22,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
     private lateinit var searchButton: ImageButton
     private lateinit var searchBox: EditText
+    private lateinit var radioGroup: RadioGroup
     private lateinit var searchedDrugList: RecyclerView
 
     private val searchedDrugsViewModel: SearchedDrugViewModel by viewModels()
@@ -32,6 +34,7 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
         searchedDrugList = view.findViewById(R.id.searched_drug_list)
         searchBox = view.findViewById(R.id.et_search_box)
         searchButton = view.findViewById(R.id.btn_navigate)
+        radioGroup = view.findViewById(R.id.radio_group_search)
 
         setupSearchListener()
         setupSearchButton()
@@ -76,7 +79,7 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
                     (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
 
             if (isSearchAction) {
-                if (getQuery().isNotEmpty()) {
+                if (getSearchDrugName().isNotEmpty()) {
                     performSearch()
                 } else {
                     showEmptyQueryError()
@@ -88,7 +91,7 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
 
     private fun setupSearchButton() {
         searchButton.setOnClickListener {
-            if (getQuery().isNotEmpty()) {
+            if (getSearchDrugName().isNotEmpty()) {
                 performSearch()
             } else {
                 showEmptyQueryError()
@@ -96,15 +99,23 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
         }
     }
 
-    private fun performSearch() {
-        val query = getQuery()
-        Log.d("RxSearchFragment", "Search query: $query")
+    private fun getSearchDrugName(): String = titleCaseWithExceptions(searchBox.text.toString().trim())
 
-        searchedDrugsViewModel.addSearchedDrug(SearchedDrug(query, System.currentTimeMillis()))
+    private fun performSearch() {
+        val searchDrugName = getSearchDrugName()
+
+        // Get the selected radio button ID
+        val selectedId = radioGroup.checkedRadioButtonId
+        val selectedOption = when (selectedId) {
+            R.id.radio_option_1 -> "brand_name"
+            R.id.radio_option_2 -> "generic_name"
+            else -> "Unknown"
+        }
+        Log.d("RxSearchFragment", "Search query: $searchDrugName, Selected option: $selectedOption")
+
+        searchedDrugsViewModel.addSearchedDrug(SearchedDrug(searchDrugName, System.currentTimeMillis()))
         findNavController().navigate(RxSearchFragmentDirections.navigateToDrugReport())
     }
-
-    private fun getQuery(): String = titleCaseWithExceptions(searchBox.text.toString().trim())
 
     private fun showEmptyQueryError() {
         Snackbar.make(
