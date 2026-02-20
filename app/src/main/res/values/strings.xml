@@ -1,28 +1,37 @@
 <resources>
     <string name="app_name">InteRxactions</string>
 
+    <!-- Search Fragment/Home Screen -->
+    <string name="label_rx_search">@string/app_name</string>
+    <string name="search_label">Search for a drug to find interacting substances.</string>
     <string name="search_hint">Enter a drug name…</string>
     <string name="search_button">Find Interacting Drugs</string>
+    <string name="search_radio_label">Search by:</string>
+    <string name="search_radio_1">Brand Name</string>
+    <string name="search_radio_2">Generic Name</string>
+
+
     <string name="search_recent">Recently Searched Drugs:</string>
 
+    <!-- Search Results Fragment -->
+    <string name="label_drug_report">Interacting Drugs</string>
     <string name="adverse_button">View Adverse Events</string>
     <string name="share_button">Share Interactions</string>
-    <string name="adverse_headline">Outcomes of Drug Adverse Events For %1$s</string>
+    <string name="error_message">"Could not find '%1$s' in the FDA %2$s."</string>
 
     <string name="search_results_title">Drugs that interact with \"%1$s\"</string>
 
+    <!-- Manufacturers Fragment -->
+    <string name="label_manufacturers_list">Manufacturers</string>
     <string name="mfr_list_heading">Manufacturers of %1$s\n(Interacts with \"%2$s\")</string>
     <string name="mfr_list_sub_heading">Click a manufacturer name to expand and view details of interactions</string>
 
     <string name="action_share">Share</string>
     <string name="share_text">DRUG: %1$s\n\nPOSSIBLE INTERACTIONS: %2$s</string>
 
-    <string name="label_rx_search">InteRxactions - Search</string>
-    <string name="label_drug_report">InteRxactions - Interacting Drugs</string>
-    <string name="label_adverse_events">InteRxactions - Adverse Events</string>
-    <string name="label_manufacturers_list">InteRxactions - Manufacturers</string>
-    <string name="error_message">"Could not find '%1$s' in the FDA %2$s."</string>
-
+    <!-- Adverse Events Fragment -->
+    <string name="label_adverse_events">Adverse Events</string>
+    <string name="adverse_headline">Outcomes of Drug Adverse Events For %1$s</string>
     <string name="chart_total_events">Total Events Reported:\n%1$s</string>
     <string name="other_legend_label">Other - Other Adverse Outcomes Not Hospitalised or Fatal</string>
     <string name="hospital_legend_label">Hospitalization - Hospitalization Due to Adverse Reactions</string>
