@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.interxactions.R
 import com.example.interxactions.data.database.SearchedDrug
+import com.example.interxactions.utils.setDrugTypeDisplay
 import java.util.Calendar
 import java.util.Date
 
@@ -42,7 +43,8 @@ class SearchedDrugsAdapter(
         view: View,
         onClick: (SearchedDrug) -> Unit
         ) : RecyclerView.ViewHolder(view) {
-        private val drugTV: TextView = view.findViewById(R.id.tv_drug_name)
+        private val drugNameTV: TextView = view.findViewById(R.id.tv_drug_name)
+        private val drugTypeTV: TextView = view.findViewById(R.id.tv_drug_type)
         private val timestampTV: TextView = view.findViewById(R.id.tv_timestamp)
         private var currentSearchedDrug: SearchedDrug? = null
 
@@ -63,7 +65,8 @@ class SearchedDrugsAdapter(
 
         fun bind(searchedDrug: SearchedDrug) {
             currentSearchedDrug = searchedDrug
-            drugTV.text = searchedDrug.drugName
+            drugNameTV.text = searchedDrug.drugName
+            drugTypeTV.text = setDrugTypeDisplay(searchedDrug.drugType)
             timestampTV.text = calculateTime(searchedDrug.timestamp)
         }
 

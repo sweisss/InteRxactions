@@ -12,3 +12,7 @@ fun titleCaseWithExceptions(
         }
     }.joinToString(" ")
 }
+
+fun setDrugTypeDisplay(drugType: String): String {
+    return "(${titleCaseWithExceptions(drugType.split('_')[0])} search)"
+}
