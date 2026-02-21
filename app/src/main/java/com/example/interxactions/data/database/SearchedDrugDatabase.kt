@@ -15,9 +15,9 @@ abstract class SearchedDrugDatabase : RoomDatabase() {
         const val DATABASE_NAME = "searched-drugs-db"
 
         private val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 // Add drugType column
-                database.execSQL("ALTER TABLE SearchedDrug ADD COLUMN drugType TEXT NOT NULL DEFAULT 'GENERIC_NAME'")
+                db.execSQL("ALTER TABLE SearchedDrug ADD COLUMN drugType TEXT NOT NULL DEFAULT 'GENERIC_NAME'")
             }
         }
         private val MIGRATION_2_3 = object : Migration(2, 3) {
