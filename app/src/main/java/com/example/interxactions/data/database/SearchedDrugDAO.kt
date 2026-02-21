@@ -15,12 +15,15 @@ interface SearchedDrugDAO {
     @Delete
     suspend fun delete(drug: SearchedDrug)
 
-    @Query("DELETE FROM SearchedDrug WHERE drugName = :name")
+    @Query("DELETE FROM searched_drug WHERE drugName = :name")
     suspend fun deleteDrugByName(name: String)
 
-    @Query("SELECT * FROM SearchedDrug ORDER BY timestamp DESC")
+    @Query("DELETE FROM searched_drug WHERE id = :id")
+    suspend fun deleteDrugById(id: String)
+
+    @Query("SELECT * FROM searched_drug ORDER BY timestamp DESC")
     fun getAllSearchedDrugs(): Flow<List<SearchedDrug>>
 
-    @Query("SELECT * FROM SearchedDrug ORDER BY timestamp DESC LIMIT 1")
+    @Query("SELECT * FROM searched_drug ORDER BY timestamp DESC LIMIT 1")
     fun getMostRecentSearchedDrug(): Flow<List<SearchedDrug>>
 }

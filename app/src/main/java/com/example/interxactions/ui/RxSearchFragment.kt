@@ -66,7 +66,7 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val searchedDrug = adapter.getItemAt(viewHolder.absoluteAdapterPosition)
 
-                    searchedDrugsViewModel.deleteDrugByName(searchedDrug.drugName)
+                    searchedDrugsViewModel.deleteDrugById(searchedDrug.id)
                 }
             }
 
@@ -113,7 +113,14 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
         }
         Log.d("RxSearchFragment", "Search term: $searchDrugName, Selected option: $selectedOption")
 
-        searchedDrugsViewModel.addSearchedDrug(SearchedDrug(searchDrugName, System.currentTimeMillis()))
+        searchedDrugsViewModel.addSearchedDrug(
+            SearchedDrug(
+                "${searchDrugName}_${selectedOption}",
+                searchDrugName,
+                selectedOption,
+                System.currentTimeMillis()
+            )
+        )
         findNavController().navigate(RxSearchFragmentDirections.navigateToDrugReport())
     }
 
@@ -129,7 +136,9 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
         Log.d("RxSearchFragment", "Clicked on drug: $drug")
 
         searchedDrugsViewModel.addSearchedDrug(SearchedDrug(
+            "${drug.drugName}_${drug.drugType}",
             drug.drugName,
+            drug.drugType,
             System.currentTimeMillis()
         ))
 

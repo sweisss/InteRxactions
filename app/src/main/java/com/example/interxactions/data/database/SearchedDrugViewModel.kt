@@ -21,6 +21,12 @@ class SearchedDrugViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    fun deleteDrugById(id: String) {
+        viewModelScope.launch {
+            repository.deleteSearchedDrugById(id)
+        }
+    }
+
     fun addSearchedDrug(drug: SearchedDrug) {
         viewModelScope.launch {
             repository.insertSearchedDrug(drug)
