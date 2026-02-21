@@ -14,6 +14,12 @@ abstract class SearchedDrugDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "searched-drugs-db"
 
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add drugType column
+                database.execSQL("ALTER TABLE SearchedDrug ADD COLUMN drugType TEXT NOT NULL DEFAULT 'GENERIC_NAME'")
+            }
+        }
         private val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 // Check if table exists before altering
@@ -42,7 +48,7 @@ abstract class SearchedDrugDatabase : RoomDatabase() {
                 context,
                 SearchedDrugDatabase::class.java,
                 DATABASE_NAME
-            ).addMigrations(MIGRATION_2_3).build()
+            ).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()
 
         fun getInstance(context: Context): SearchedDrugDatabase {
             return instance ?: synchronized(this) {
