@@ -192,15 +192,13 @@ class AdverseEventsFragment : Fragment(R.layout.adverse_events_layout) {
         super.onResume()
 
         // Set up an observer for the most recent searched drug
-        searchedDrugsViewModel.mostRecentSearchedDrug.observe(viewLifecycleOwner) { drug ->
-            // If we have a drug then we can make the API call
-            if (drug != null) {
-                // Cache the most recent searched drug
-                cachedDrugName = drug[0].drugName
-                // Make the API call using the most recent searched drug
-                val query = "patient.drug.openfda.generic_name:${drug[0].drugName}"
-                viewModel.loadReactionOutcomeCount(query)
-            }
+        searchedDrugsViewModel.mostRecentSearchedDrug.observe(viewLifecycleOwner) { drugs ->
+            val drug = drugs[0]
+            // Cache the most recent searched drug
+            cachedDrugName = drug.drugName
+            // Make the API call using the most recent searched drug
+            val query = "patient.drug.openfda.generic_name:${drug.drugName}"
+            viewModel.loadReactionOutcomeCount(query)
         }
     }
 }

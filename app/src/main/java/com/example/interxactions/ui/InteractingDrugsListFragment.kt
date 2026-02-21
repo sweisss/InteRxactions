@@ -99,6 +99,7 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
 
     // The name of the drug that was searched
     private lateinit var searchedDrugName: String
+    private lateinit var searchedDrugType: String
 
     private lateinit var displayListCache: List<DrugInteractionsDisplay>
 
@@ -137,13 +138,17 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
         * However, Retrofit appears to be URL encoding the `+` signs, so it gets double encoded.
         * Replacing the `+` signs with a space ` ` appears to fix the issue.
         * */
-        searchedDrugsViewModel.mostRecentSearchedDrug.observe(viewLifecycleOwner) { drug ->
+        searchedDrugsViewModel.mostRecentSearchedDrug.observe(viewLifecycleOwner) { drugs ->
+            val drug = drugs[0]
+            Log.d("InteractingDrugsListFragment", "Searched drug: $drug")
+
             // Set up the RecyclerView and buttons
-            searchedDrugName = drug[0].drugName // Get the name of the drug that was searched
+            searchedDrugName = drug.drugName // Get the name of the drug that was searched
+            searchedDrugType = drug.drugType
             drugNameTitle.text = getString(R.string.search_results_title, searchedDrugName) // Set the title of the drug that was searched
             Log.d("InteractingDrugsListFragment", "Searched drug outside observe: $searchedDrugName")
 
-            val query = "drug_interactions:$searchedDrugName AND _exists_:openfda.generic_name" // Create the query to search for drug interactions
+            val query = "drug_interactions:$searchedDrugName AND _exists_:openfda.${searchedDrugType}" // Create the query to search for drug interactions
             Log.d("InteractingDrugsListFragment", "Query: $query")
 
             viewModel.loadDrugInteractions(query) // Load the drug interactions for the given search query
