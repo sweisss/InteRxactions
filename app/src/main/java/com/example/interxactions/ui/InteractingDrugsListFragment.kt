@@ -137,9 +137,12 @@ class InteractingDrugsListFragment : Fragment(R.layout.interacting_drugs_list_fr
         * However, Retrofit appears to be URL encoding the `+` signs, so it gets double encoded.
         * Replacing the `+` signs with a space ` ` appears to fix the issue.
         * */
-        searchedDrugsViewModel.mostRecentSearchedDrug.observe(viewLifecycleOwner) { drug ->
+        searchedDrugsViewModel.mostRecentSearchedDrug.observe(viewLifecycleOwner) { drugs ->
+            val drug = drugs[0]
+            Log.d("InteractingDrugsListFragment", "Searched drug: $drug")
+
             // Set up the RecyclerView and buttons
-            searchedDrugName = drug[0].drugName // Get the name of the drug that was searched
+            searchedDrugName = drug.drugName // Get the name of the drug that was searched
             drugNameTitle.text = getString(R.string.search_results_title, searchedDrugName) // Set the title of the drug that was searched
             Log.d("InteractingDrugsListFragment", "Searched drug outside observe: $searchedDrugName")
 
