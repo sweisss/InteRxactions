@@ -82,7 +82,7 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
                 if (getSearchDrugName().isNotEmpty()) {
                     performSearch()
                 } else {
-                    showEmptyQueryError()
+                    showEmptyTermError()
                 }
             }
             isSearchAction
@@ -94,7 +94,7 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
             if (getSearchDrugName().isNotEmpty()) {
                 performSearch()
             } else {
-                showEmptyQueryError()
+                showEmptyTermError()
             }
         }
     }
@@ -111,13 +111,13 @@ class RxSearchFragment : Fragment(R.layout.rx_search_fragment) {
             R.id.radio_option_2 -> "generic_name"
             else -> "Unknown"
         }
-        Log.d("RxSearchFragment", "Search query: $searchDrugName, Selected option: $selectedOption")
+        Log.d("RxSearchFragment", "Search term: $searchDrugName, Selected option: $selectedOption")
 
         searchedDrugsViewModel.addSearchedDrug(SearchedDrug(searchDrugName, System.currentTimeMillis()))
         findNavController().navigate(RxSearchFragmentDirections.navigateToDrugReport())
     }
 
-    private fun showEmptyQueryError() {
+    private fun showEmptyTermError() {
         Snackbar.make(
             searchBox,
             "Please enter or select a drug to search.",
